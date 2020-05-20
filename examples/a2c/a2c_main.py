@@ -1,13 +1,8 @@
 import os
 import sys
+from ..utils.launcher import main
 
-_path = os.path.abspath(os.path.pardir)
-if not _path in sys.path:
-    sys.path = [_path] + sys.path
-
-from utils.launcher import main
-
-from train import worker
+from .train import worker
 
 def a2c_parser_options(parser):
     parser.add_argument('--entropy-coef', type=float, default=0.01, help='entropy term coefficient (default: 0.01)')

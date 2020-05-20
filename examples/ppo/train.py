@@ -9,16 +9,11 @@ import torch.optim as optim
 import torch.utils.data
 
 from tqdm import tqdm
-from utils.initializers import args_initialize, env_initialize, log_initialize, model_initialize
+from ..utils.initializers import args_initialize, env_initialize, log_initialize, model_initialize
 
-from a2c.helper import callback, format_time, gen_data
-from a2c.model import ActorCritic
-from a2c.test import test
-
-try:
-    from apex import amp
-except ImportError:
-    raise ImportError('Please install apex from https://www.github.com/nvidia/apex to run this example.')
+from ..a2c.helper import callback, format_time, gen_data
+from ..a2c.model import ActorCritic
+from ..a2c.test import test
 
 class data_prefetcher():
     def __init__(self, loader):

@@ -6,11 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-_path = os.path.abspath(os.path.pardir)
-if not _path in sys.path:
-    sys.path = [_path] + sys.path
-
-from utils.openai.vec_normalize import RunningMeanStd
+from ..utils.openai.vec_normalize import RunningMeanStd
 
 def weights_init(m):
     if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):

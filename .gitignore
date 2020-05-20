@@ -20,3 +20,7 @@ dist
 # data files
 *.csv
 examples/*/runs
+
+# notebooks
+.ipynb_checkpoints
+*.ipynb

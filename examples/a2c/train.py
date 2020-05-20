@@ -7,16 +7,11 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 from tqdm import tqdm
-from utils.initializers import args_initialize, env_initialize, log_initialize, model_initialize
+from ..utils.initializers import args_initialize, env_initialize, log_initialize, model_initialize
 
-from helper import callback, format_time, gen_data
-from model import ActorCritic
-from test import test
-
-try:
-    from apex import amp
-except ImportError:
-    raise ImportError('Please install apex from https://www.github.com/nvidia/apex to run this example.')
+from .helper import callback, format_time, gen_data
+from .model import ActorCritic
+from .test import test
 
 def worker(gpu, ngpus_per_node, args):
     env_device, train_device = args_initialize(gpu, ngpus_per_node, args)

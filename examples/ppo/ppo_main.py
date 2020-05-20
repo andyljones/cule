@@ -1,13 +1,9 @@
 import os
 import sys
 
-current_path = os.path.dirname(os.path.realpath(__file__))
-_path = os.path.abspath(os.path.join(current_path, os.pardir))
-if not _path in sys.path:
-    sys.path = [_path] + sys.path
-
-from a2c.a2c_main import a2c_parser_options
-from utils.launcher import main
+from ..a2c.a2c_main import a2c_parser_options
+from ..utils.launcher import main
+from .train import worker
 
 def ppo_parser_options(parser):
     parser = a2c_parser_options(parser)
@@ -19,12 +15,7 @@ def ppo_parser_options(parser):
     return parser
 
 def ppo_main():
-    if sys.version_info.major == 3:
-        from train import worker
-    else:
-        worker = None
-
-    sys.exit(main(ppo_parser_options, worker))
+    main(ppo_parser_options, worker)
 
 if __name__ == '__main__':
     ppo_main()

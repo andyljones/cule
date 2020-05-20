@@ -16,11 +16,6 @@ from a2c.helper import callback, format_time, gen_data
 from a2c.model import ActorCritic
 from a2c.test import test
 
-try:
-    from apex import amp
-except ImportError:
-    raise ImportError('Please install apex from https://www.github.com/nvidia/apex to run this example.')
-
 def worker(gpu, ngpus_per_node, args):
     env_device, train_device = args_initialize(gpu, ngpus_per_node, args)
 
