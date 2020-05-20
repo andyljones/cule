@@ -1,12 +1,8 @@
 import os
 import sys
-
-_path = os.path.abspath(os.path.pardir)
-if not _path in sys.path:
-    sys.path = [_path] + sys.path
-
-from a2c.a2c_main import a2c_parser_options
-from utils.launcher import main
+from ..a2c.a2c_main import a2c_parser_options
+from ..utils.launcher import main
+from .train import worker
 
 def vtrace_parser_options(parser):
     parser = a2c_parser_options(parser)
@@ -19,12 +15,9 @@ def vtrace_parser_options(parser):
     return parser
 
 def vtrace_main():
-    if sys.version_info.major == 3:
-        from train import worker
-    else:
-        worker = None
-
-    sys.exit(main(vtrace_parser_options, worker))
+    import sys
+    sys.argv = [''] + '--env-name PongNoFrameskip-v4 --normalize --use-cuda-env --num-ales 1200 --num-steps 20 --num-steps-per-update 1 --num-minibatches 20 --t-max 8000000 --evaluation-interval 200000'.split()
+    main(vtrace_parser_options, worker)
 
 if __name__ == '__main__':
     vtrace_main()

@@ -8,18 +8,19 @@ import torch.cuda.nvtx as nvtx
 import numpy as np
 import torch.nn.functional as F
 import torch.optim as optim
+from apex import amp
 
 from tqdm import tqdm
-from utils.initializers import args_initialize, env_initialize, log_initialize, model_initialize
+from ..utils.initializers import args_initialize, env_initialize, log_initialize, model_initialize
 
-from a2c.helper import callback, format_time, gen_data
-from a2c.model import ActorCritic
-from a2c.test import test
+from ..a2c.helper import callback, format_time, gen_data
+from ..a2c.model import ActorCritic
+from ..a2c.test import test
 
 def worker(gpu, ngpus_per_node, args):
     env_device, train_device = args_initialize(gpu, ngpus_per_node, args)
 
-    double_testing = True    
+    double_testing = False    
 
     # openai and cule testing
     if double_testing == False:
@@ -258,11 +259,11 @@ def worker(gpu, ngpus_per_node, args):
 
         nvtx.range_push('train:next_states')
         for step in range(0, args.num_steps_per_update):
-            states[:-1, :, :, :, :] = states[1:, :, :, : ,:]
-            rewards[:-1, :] = rewards[1:, :]
-            actions[:-1, :] = actions[1:, :]
-            masks[:-1, :] = masks[1:, :]
-            mus[:-1, :] = mus[1:, :]
+            states[:-1, :, :, :, :] = states[1:, :, :, : ,:].clone()
+            rewards[:-1, :] = rewards[1:, :].clone()
+            actions[:-1, :] = actions[1:, :].clone()
+            masks[:-1, :] = masks[1:, :].clone()
+            mus[:-1, :] = mus[1:, :].clone()
         nvtx.range_pop()
 
         torch.cuda.synchronize()
