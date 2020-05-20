@@ -17,5 +17,12 @@ def ppo_parser_options(parser):
 def ppo_main():
     main(ppo_parser_options, worker)
 
+def test():
+    import sys
+    args = '--env-name PongNoFrameskip-v4 --normalize --use-cuda-env --num-ales 1200 --num-steps 20 --t-max 8000000 --evaluation-interval 200000'
+    sys.argv = [''] + args.split()
+    ppo_main()
+
+
 if __name__ == '__main__':
     ppo_main()

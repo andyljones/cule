@@ -140,11 +140,6 @@ def model_initialize(args, model, device):
         optimizer = optim.RMSprop(model.parameters(), lr=args.lr, eps=args.eps, alpha=args.alpha)
 
     if device.type == 'cuda':
-        model, optimizer = amp.initialize(model, optimizer,
-                                          opt_level=args.opt_level,
-                                          loss_scale=args.loss_scale
-                                         )
-
         if args.distributed:
             model = DDP(model, delay_allreduce=True)
 

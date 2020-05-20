@@ -48,6 +48,7 @@ def worker(gpu, ngpus_per_node, args):
 
     model = ActorCritic(args.num_stack, train_env.action_space, normalize=args.normalize, name=args.env_name)
     model, optimizer = model_initialize(args, model, train_device)
+    scaler = torch.cuda.amp.GradScaler()
 
     shape = (args.num_steps + 1, args.num_ales, args.num_stack, *train_env.observation_space.shape[-2:])
     states = torch.zeros(shape, device=train_device, dtype=torch.float32)
@@ -118,7 +119,8 @@ def worker(gpu, ngpus_per_node, args):
 
             for step in range(args.num_steps):
                 nvtx.range_push('train:step')
-                value, logit = model(states[step])
+                with torch.cuda.amp.autocast():
+                    value, logit = model(states[step])
 
                 # store values and logits
                 values[step], logits[step] = value.squeeze(-1), logit.squeeze(-1)
@@ -164,7 +166,8 @@ def worker(gpu, ngpus_per_node, args):
                 episode_lengths *= not_done
                 nvtx.range_pop()
 
-            returns[-1] = values[-1] = model(states[-1])[0].data.squeeze(-1)
+            with torch.cuda.amp.autocast():
+                returns[-1] = values[-1] = model(states[-1])[0].data.squeeze(-1)
 
             if args.use_gae:
                 gae.zero_()
@@ -210,7 +213,9 @@ def worker(gpu, ngpus_per_node, args):
                 local_states, local_actions, local_action_log_probs, local_returns, local_advantages = prefetcher.next()
 
                 while local_states is not None:
-                    batch_values, batch_logits = model(local_states)
+                    with torch.cuda.amp.autocast():
+                        batch_values, batch_logits = model(local_states)
+
                     batch_log_probs = F.log_softmax(batch_logits, dim=1)
                     batch_action_log_probs = batch_log_probs.gather(1, local_actions.unsqueeze(-1))
 
@@ -228,14 +233,14 @@ def worker(gpu, ngpus_per_node, args):
 
                     if args.cpu_train:
                         loss.backward()
-                        master_params = model.parameters()
+                        torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
+                        optimizer.step()
                     else:
-                        with amp.scale_loss(loss, optimizer) as scaled_loss:
-                            scaled_loss.backward()
-                        master_params = amp.master_params(optimizer)
-
-                    torch.nn.utils.clip_grad_norm_(master_params, args.max_grad_norm)
-                    optimizer.step()
+                        scaler.scale(loss).backward()
+                        scaler.unscale_(optimizer)
+                        torch.nn.utils.clip_grad_norm_(model.parameters(), args.max_grad_norm)
+                        scaler.step(optimizer)
+                        scaler.update()
 
                     total_value_loss += batch_value_loss.item()
                     total_policy_loss += batch_policy_loss.item()
