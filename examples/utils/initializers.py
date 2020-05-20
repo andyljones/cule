@@ -12,6 +12,19 @@ from torchcule.atari import Env as AtariEnv
 from .openai.envs import create_vectorize_atari_env
 from .runtime import cuda_device_str
 
+from .openai.envs import create_vectorize_atari_env
+from .runtime import cuda_device_str
+
+try:
+    import apex
+    from apex.amp import __version__
+    from apex.parallel import DistributedDataParallel as DDP
+    from apex.fp16_utils import *
+    from apex import amp, optimizers
+    from apex.multi_tensor_apply import multi_tensor_applier
+except ImportError:
+    raise ImportError('Please install apex from https://www.github.com/nvidia/apex to run this example.')
+
 def args_initialize(gpu, ngpus_per_node, args):
     args.gpu = gpu
 
@@ -140,6 +153,11 @@ def model_initialize(args, model, device):
         optimizer = optim.RMSprop(model.parameters(), lr=args.lr, eps=args.eps, alpha=args.alpha)
 
     if device.type == 'cuda':
+        model, optimizer = amp.initialize(model, optimizer,
+                                          opt_level=args.opt_level,
+                                          loss_scale=args.loss_scale
+                                         )
+
         if args.distributed:
             model = DDP(model, delay_allreduce=True)
 
