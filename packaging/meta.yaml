@@ -1,0 +1,19 @@
+package:
+    name: torchcule
+    version: 0.1
+
+source: 
+    path: ..
+
+requirements:
+    build:
+        - python
+        - setuptools
+        - cython
+        - pybind11
+    run:
+        - numpy >=1.11
+        - atari_py 
+        - gym
+        - pytorch >=1.4
+        - tqdm

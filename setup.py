@@ -6,10 +6,10 @@ from Cython.Distutils import build_ext
 
 from distutils.cmd import Command
 from setuptools import find_packages, setup, Extension
-from examples.utils.runtime import Runtime
+from packaging import Runtime
 
 try:
-    from examples.utils.runtime import get_device_props
+    from packaging import get_device_props
     codes = sorted(set([str(p.major) + str(p.minor) for p in get_device_props()]))
     arch_gencode = ['-arch=sm_' + codes[0]] + ['-gencode=arch=compute_{0},code=sm_{0}'.format(code) for code in codes]
 except:
@@ -86,9 +86,9 @@ class custom_build_ext(build_ext):
 setup(name='torchcule',
       version='0.1.0',
       description='A GPU RL environment package for PyTorch',
-      url='https://github.com/NVlabs/cule',
-      author='Steven Dalton',
-      author_email='sdalton1@gmail.com',
+      url='https://github.com/andyljones/cule',
+      author='Andy Jones',
+      author_email='andyjones.ed@gmail.com',
       install_requires=['gym>=0.9.5'],
       ext_modules=[
           Extension('torchcule_atari',

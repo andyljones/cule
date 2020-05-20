@@ -79,14 +79,8 @@ RUN pip install jupyter_contrib_nbextensions && \
     jupyter nbextension enable autoscroll/main 
 
 # Add CuLE deps
-RUN apt-get install -y --no-install-recommends libsm6 libxrender-dev zlib1g-dev libxtst6
-RUN pip install psutil pytz tqdm atari_py opencv-python cython
-
-# Set up APEX
-RUN cd /root && \
-    git clone https://github.com/NVIDIA/apex && \
-    cd apex && \
-    pip install -v --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./ \
+RUN apt-get install -y --no-install-recommends zlib1g-dev
+RUN pip install tqdm atari_py gym cython
 
 # Set up the entrypoint script
 ADD run.sh /usr/bin/
