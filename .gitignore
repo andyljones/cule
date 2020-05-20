@@ -24,3 +24,6 @@ examples/*/runs
 # notebooks
 .ipynb_checkpoints
 *.ipynb
+
+# logs
+output
