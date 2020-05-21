@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(torchcule CXX CUDA)
 
-add_library(torchcule_atari 
+add_library(torchcule_atari SHARED
     "${PROJECT_SOURCE_DIR}/torchcule/frontend.cpp" 
     "${PROJECT_SOURCE_DIR}/torchcule/backend.cu")
 
@@ -25,4 +25,4 @@ target_include_directories(
 set_target_properties(
     torchcule_atari PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON    
-)
+    PREFIX "")

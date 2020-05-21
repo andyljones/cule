@@ -1,4 +1,4 @@
-from setuptools import find_packages, setup, Extension
+from setuptools import find_packages, setup
 from pathlib import Path
 
 setup(name='torchcule',
@@ -8,6 +8,5 @@ setup(name='torchcule',
       author='Andy Jones',
       author_email='andyjones.ed@gmail.com',
       # Exclude the build files.
-      packages=find_packages(exclude=['build', 'pkg']),
-      package_data={'': list(Path('.').glob('*.so'))})
-
+      packages=['torchcule', 'torchcule.atari'],
+      py_modules=['torchcule_atari']) 

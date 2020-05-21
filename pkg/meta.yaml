@@ -26,5 +26,6 @@ requirements:
 
 test:
     imports:
-        - torchcule
-        
+        - torchcule.atari
+    commands:
+        - python -c "from torchcule.atari import Env; env = Env('PongNoFrameskip-v4', 1); env.reset()"
