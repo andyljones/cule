@@ -13,20 +13,9 @@ RUN apt-get update && \
         # Needed for conda
         curl ca-certificates bzip2 procps \ 
         # Needed for git installs
-        git ssh-client \
-        # Needed for fast PyTorch linking
-        lld ccache && \
+        git ssh-client && \
     # Set up tini
     chmod +x /usr/bin/tini
-
-# Softlink LLD into place. Apparently makes a difference with large CUDA projects
-# https://github.com/pytorch/pytorch/blob/master/CONTRIBUTING.md
-RUN ln -sf /usr/lib/llvm-6.0/bin/ld.lld /usr/bin/ld && \
-    /usr/sbin/update-ccache-symlinks && \
-    ln -s /usr/bin/ccache /usr/lib/ccache/nvcc && \
-    ccache -M 5Gi && \
-    ccache -F 0
-ENV PATH $PATH:/usr/lib/ccache
 
 # Set up git
 RUN git config --global user.name "Andrew Jones" && \
@@ -45,7 +34,7 @@ ADD .jupyter /root/.jupyter
 ADD .ipython /root/.ipython
 
 # Install the Python packages I usually use
-RUN conda install -y numpy pytorch torchvision pandas -c pytorch && \
+RUN conda install -y numpy pytorch torchvision pandas conda-build -c pytorch && \
     conda clean -ya && \
     # Install Jupyter 7.5 because 7.6.1 has a bunch of lag with autoreload 
     pip install scipy psutil jupyter tqdm seaborn bokeh matplotlib setproctitle wurlitzer ipython==7.5 flake8 
