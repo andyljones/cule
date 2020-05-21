@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 
 project(torchcule CXX CUDA)
 
-add_library(torchcule_atari torchcule/frontend.cpp torchcule/backend.cu)
+add_library(torchcule_atari 
+    "${PROJECT_SOURCE_DIR}/torchcule/frontend.cpp" 
+    "${PROJECT_SOURCE_DIR}/torchcule/backend.cu")
 
 set(PYTHON_LIBRARIES "$ENV{STDLIB_DIR}")
 set(PYTHON_INCLUDE_DIRS "$ENV{PREFIX}/include/python$ENV{PY_VER}m")
@@ -19,3 +21,8 @@ target_include_directories(
     "${PROJECT_SOURCE_DIR}/third_party/agency"
     ${PYTHON_INCLUDE_DIRS}
     ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+
+set_target_properties(
+    torchcule_atari PROPERTIES
+    CUDA_SEPARABLE_COMPILATION ON    
+)
