@@ -7,11 +7,20 @@ source:
 
 requirements:
     build:
+        - ldlib
+        - libc
+        - libm
+        - libgcc-ng
         - python
         - setuptools
         - cython
         - pybind11
+        - zlib
     run:
+        - libstdcxx-ng
+        - libgcc-ng
+        - _openmp_mutex
+        - zlib
         - numpy >=1.11
         - atari_py 
         - gym

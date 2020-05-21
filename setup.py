@@ -6,7 +6,7 @@ from Cython.Distutils import build_ext
 
 from distutils.cmd import Command
 from setuptools import find_packages, setup, Extension
-from packaging import Runtime
+from conda import Runtime
 
 try:
     from packaging import get_device_props
