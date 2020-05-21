@@ -89,7 +89,6 @@ setup(name='torchcule',
       url='https://github.com/andyljones/cule',
       author='Andy Jones',
       author_email='andyjones.ed@gmail.com',
-      install_requires=['gym>=0.9.5'],
       ext_modules=[
           Extension('torchcule_atari',
               sources=sources,
