@@ -17,10 +17,14 @@ requirements:
     run:
         - libstdcxx-ng
         - libgcc-ng
-        - _openmp_mutex
         - zlib
         - numpy >=1.11
         - atari_py 
         - gym
         - pytorch >=1.4
         - tqdm
+
+test:
+    imports:
+        - torchcule
+        
