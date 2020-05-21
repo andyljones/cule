@@ -4,7 +4,6 @@ This module provides access to several RL environments that generate data
 on the CPU or GPU.
 """
 
-import atari_py
 import math
 import numpy as np
 import os
@@ -217,7 +216,7 @@ class Env(torchcule_atari.AtariEnv):
         """
         return (self.height, self.width)
 
-    def reset(self, seeds=None, initial_steps=50, verbose=False, asyn=False):
+    def reset(self, seeds=None, initial_steps=50, asyn=False):
         """Reset the environments
 
         Args:
@@ -238,10 +237,6 @@ class Env(torchcule_atari.AtariEnv):
 
         if self.is_training:
             iterator = range(math.ceil(initial_steps / self.frameskip))
-
-            if verbose:
-                from tqdm import tqdm
-                iterator = tqdm(iterator)
 
             for _ in iterator:
                 actions = self.sample_random_actions()

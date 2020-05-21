@@ -4,7 +4,6 @@ This module provides access to several RL environments that generate data
 on the CPU or GPU.
 """
 
-import atari_py
 import gym
 import os
 
@@ -15,9 +14,7 @@ class Rom(AtariRom):
     def __init__(self, env_name):
         game_path = gym.make(env_name).env.game_path
         if not os.path.exists(game_path):
-            raise IOError('Requested environment (%s) does not exist '
-                          'in valid list of environments:\n%s' \
-                          % (env_name, ', '.join(sorted(atari_py.list_games()))))
+            raise IOError('Requested environment (%s) does not exist in valid list of environments')
         super(Rom, self).__init__(game_path)
 
     def __repr__(self):

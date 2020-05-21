@@ -1,3 +1,4 @@
+# conda-build pkg -c default -c pytorch -c conda-forge
 package:
     name: torchcule
     version: 0.1
@@ -16,13 +17,12 @@ requirements:
         - zlib
     run:
         - libstdcxx-ng
+        - _openmp_mutex
         - libgcc-ng
         - zlib
         - numpy >=1.11
-        - atari_py 
         - gym
         - pytorch >=1.4
-        - tqdm
 
 test:
     imports:

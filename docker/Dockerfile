@@ -69,7 +69,7 @@ RUN pip install jupyter_contrib_nbextensions && \
 
 # Add CuLE deps
 RUN apt-get install -y --no-install-recommends zlib1g-dev
-RUN pip install tqdm atari_py gym cython
+RUN pip install gym cython
 
 # Set up the entrypoint script
 ADD run.sh /usr/bin/
