@@ -7,10 +7,8 @@ source:
 
 requirements:
     build:
-        - ldlib
-        - libc
-        - libm
         - libgcc-ng
+        - libstdcxx-ng
         - python
         - setuptools
         - cython

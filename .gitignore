@@ -28,3 +28,6 @@ examples/*/runs
 
 # logs
 output
+
+# vscode
+.vscode
