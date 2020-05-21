@@ -14,7 +14,7 @@ case NAME:                                                             \
     break;                                                             \
 }
 
-#if 0
+#ifndef CULE_FAST_COMPILE
     #define OTHER_ROM_CASES(FUNC, ...)                                 \
     ROM_CASE(ROM_4K, FUNC, __VA_ARGS__)                                \
     ROM_CASE(ROM_F8SC, FUNC, __VA_ARGS__)                              \

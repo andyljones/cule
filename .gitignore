@@ -26,8 +26,6 @@ examples/*/runs
 .ipynb_checkpoints
 *.ipynb
 
-# logs
+# other
 output
-
-# vscode
 .vscode
