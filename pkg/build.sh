@@ -1,1 +1,1 @@
-$PYTHON setup.py install --fastbuild
+$PYTHON setup.py install

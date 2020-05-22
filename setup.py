@@ -85,8 +85,8 @@ class custom_build_ext(build_ext):
 
 setup(name='torchcule',
       version='0.1.0',
-      description='A GPU RL environment package for PyTorch',
-      url='https://github.com/andyljones/cule',
+      description='GPU RL env derived from NVIDIA\'s CuLE repo. They are not responsible for this package though!',
+      url='https://github.com/nvidia/cule',
       author='Andy Jones',
       author_email='andyjones.ed@gmail.com',
       ext_modules=[
