@@ -13,7 +13,9 @@ RUN apt-get update && \
         # Needed for conda
         curl ca-certificates bzip2 procps \ 
         # Needed for git installs
-        git ssh-client && \
+        git ssh-client \
+        # Needed for CuLE
+        zlib1g-dev && \
     # Set up tini
     chmod +x /usr/bin/tini
 
@@ -34,10 +36,10 @@ ADD .jupyter /root/.jupyter
 ADD .ipython /root/.ipython
 
 # Install the Python packages I usually use
-RUN conda install -y numpy pytorch torchvision pandas conda-build -c pytorch && \
+RUN conda install -y numpy pytorch torchvision pandas conda-build anaconda-client -c pytorch && \
     conda clean -ya && \
     # Install Jupyter 7.5 because 7.6.1 has a bunch of lag with autoreload 
-    pip install scipy psutil jupyter tqdm seaborn bokeh matplotlib setproctitle wurlitzer ipython==7.5 flake8 
+    pip install scipy psutil jupyter tqdm seaborn bokeh matplotlib setproctitle wurlitzer ipython==7.5 flake8 gym cython
 
 # Install my backend Jupyter extensions
 # aljpy needs to be before noterminal
@@ -66,10 +68,6 @@ RUN pip install jupyter_contrib_nbextensions && \
     jupyter nbextension install stripcommon && \
     jupyter nbextension enable stripcommon/main && \
     jupyter nbextension enable autoscroll/main 
-
-# Add CuLE deps
-RUN apt-get install -y --no-install-recommends zlib1g-dev
-RUN pip install gym cython
 
 # Set up the entrypoint script
 ADD run.sh /usr/bin/

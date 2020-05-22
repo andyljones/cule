@@ -22,6 +22,7 @@ requirements:
         - zlib
         - numpy >=1.11
         - gym
+        - atari_py
         - pytorch >=1.4
 
 test:
